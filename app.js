@@ -1,6 +1,7 @@
 const Employee = require("./lib/employee");
 const Manager = require("./lib/manager");
 const Intern = require("./lib/intern");
+const Engineer = require("./lib/engineer");
 
 
 
@@ -62,14 +63,42 @@ function internQuestion() {
   ]);
 }
 
+
+function engineerQuestion() {
+  return inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "What is your name?"
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "Enter your Employee Id?"
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "Enter your email"
+    },
+    {
+      type: "input",
+      name: "github",
+      message: "What is your Github Id?"
+    }
+
+  ]);
+}
+
 var EmployeeAry = [];
 
 function promptUser() {
   return inquirer.prompt([
+     
     {
       type: "input",
       name: "type",
-      message: "What type of employee will be entered?"
+      message: "What type of employee will be entered?  (Manager,Engineer,Intern) stop to quit entering employees"
     }
 
   ]);
@@ -78,8 +107,9 @@ function promptUser() {
 async function init() {
 
   console.log("init")
-   let roletype = "notstop"
-     while (!(roletype === "stop")) {
+  try{
+    let roletype = "notstop"
+    while (!(roletype === "stop")) {
     let employeetype = await promptUser();
     roletype = employeetype.type;
     console.log(employeetype.type)
@@ -100,7 +130,7 @@ async function init() {
       if (roletype.toLowerCase() === "intern") {
         console.log("intern")
         let answers = await internQuestion();
-        var newIntern = new Intern();
+        let newIntern = new Intern();
         newIntern.name = answers.name;
         newIntern.id = answers.id;
         newIntern.email = answers.email;
@@ -109,13 +139,25 @@ async function init() {
         console.log(EmployeeAry);
       }
 
+      if (roletype.toLowerCase() === "engineer") {
+        console.log("engineer")
+        let answers = await engineerQuestion();
+        let newEngineer = new Engineer();
+        newEngineer.name = answers.name;
+        newEngineer.id = answers.id;
+        newEngineer.email = answers.email;
+        newEngineer.github = answers.github;
+        EmployeeAry.push(newEngineer);
+        console.log(EmployeeAry);
+      }
+
      }
 
 
 
-  // } catch (err) {
-  //   console.log(err);
-  // }
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 
