@@ -1,0 +1,13 @@
+.card-header{
+    background: lightslategray;
+    color: white;
+}
+
+h1{
+    width: 100%;
+    text-align: center;
+}
+
+.card{
+    width: 250px;
+}

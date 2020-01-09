@@ -4,7 +4,6 @@ const Intern = require("./lib/intern");
 const Engineer = require("./lib/engineer");
 
 
-
 const inquirer = require("inquirer");
 const fs = require("fs");
 const util = require("util");
@@ -90,7 +89,8 @@ function engineerQuestion() {
   ]);
 }
 
-var EmployeeAry = [];
+var cardsArray = [];
+var htmlArray= [];
 
 function promptUser() {
   return inquirer.prompt([
@@ -112,7 +112,7 @@ async function init() {
     while (!(roletype === "stop")) {
     let employeetype = await promptUser();
     roletype = employeetype.type;
-    console.log(employeetype.type)
+    // console.log(employeetype.type)
 
       if (roletype.toLowerCase() === "manager") {
         console.log("Manager ")
@@ -123,8 +123,9 @@ async function init() {
         newManager.email = answers.email;
         newManager.officeNumber = answers.office;
         //Need to get the office numbers;
-        EmployeeAry.push(newManager);
-        console.log(EmployeeAry);
+        let newManagerCard= newManager.generateHTML();
+        cardsArray.push(newManagerCard);
+        // console.log(newManagerCard);
       }
 
       if (roletype.toLowerCase() === "intern") {
@@ -135,8 +136,9 @@ async function init() {
         newIntern.id = answers.id;
         newIntern.email = answers.email;
         newIntern.school = answers.school;
-        EmployeeAry.push(newIntern);
-        console.log(EmployeeAry);
+        let newInternCard= newIntern.generateHTML();
+       cardsArray.push(newInternCard);
+        // console.log(newInternCard);
       }
 
       if (roletype.toLowerCase() === "engineer") {
@@ -147,12 +149,16 @@ async function init() {
         newEngineer.id = answers.id;
         newEngineer.email = answers.email;
         newEngineer.github = answers.github;
-        EmployeeAry.push(newEngineer);
-        console.log(EmployeeAry);
+        let newEngineerCard = newEngineer.generateHTML();
+        cardsArray.push(newEngineerCard);
+        // console.log(newEngineerCard);
       }
 
      }
 
+     //create index.html file
+     let cardString = cardsArray.join("");
+     generateHTML(cardString);
 
 
   } catch (err) {
@@ -160,5 +166,49 @@ async function init() {
   }
 }
 
+//**************generate index.html page********************/
+function generateHTML(cardString) {
+  console.log("generating HTML");
+  const html = `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+      <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+        crossorigin="anonymous"
+      />
+      <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+        rel="stylesheet"
+      />
+      <link rel="stylesheet" href="style.css" />
+      <title>Development Team</title>
+    </head>
+     <body>
+     <div class="jumbotron">
+          <div class = "row jumbo-4 text-center">
+          <h1>Development Team Staff</h1>
+          </div>
+      </div>
+      <div class="row d-flex justify-content-around">
+      ${cardString}
+     </div>
+      </body>
+     </body>
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script src="./script.js"></script>
+    </html>`
+    writeFileAsync('index.html', html, 'utf8');
+}
+//********************************Calling Functions*************************************************/
 
 init();
