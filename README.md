@@ -12,5 +12,8 @@ The dependencies are, [jest](https://jestjs.io/) for running the provided tests,
 The "team" consists of manager, engineers, and interns. Each is represented by the parent class Employee from which each type of role is an extended class from Employee.
 An HTML file is generated from the answers given in command line prompts.
 
+![Team Profile Generator](devteamgen.gif)
+
+
 
 ![Team Profile Generator](screenshot.jpg)
